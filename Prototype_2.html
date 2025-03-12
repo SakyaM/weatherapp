@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>My weather forecast App</title>
+  </head>
+  <body>
+    <!-- Weather Details -->
+    <div class="window">
+      <h1>Weather Details</h1>
+      <!-- Search Button -->
+      <div class="Search">
+        <div class="search-container">
+          <input type="text" placeholder="Enter City Name" id="Input_City" class="city-input">
+          <input type="submit" value="Search" class="submit">
+        </div>
+      </div>
+
+      <div class="weather_info">
+        <img src="Images/weather.png" class="weather_icon">
+        <!-- Display temperature -->
+        <h1 class="temp"></h1>
+
+        <div class="name_could">
+          <!-- Display City name -->
+          <h2 class="city_name"></h2>
+          <!-- Display weather type -->
+          <h2 class="cloudtype"></h2>
+        </div>
+        <!-- Display date and time -->
+        <p class="date"></p>
+      </div>
+
+      <div class="Info">
+        <div class="info-1">
+          <!-- Display wind details -->
+          <img src="Images/wind.png" class="windpic">
+          <div>
+            <p class="wind"></p>
+            <p class="Info_name">Wind Speed</p>
+          </div>
+        </div>
+
+        <div class="info-1">
+          <!-- Display humidity details -->
+          <img src="Images/hum.png" class="humipic">
+          <div>
+            <p class="humidity"></p>
+            <p class="Info_name">Humidity</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const APIkey = 'f3efc227fce43c2803f7c78792b23924';
+      var iconCode;
+      var  iconUrl;
+      
+      const button = document.querySelector('.submit');
+      button.addEventListener('click', function(){
+        var Input_City = document.getElementById("Input_City").value;
+        const API_URL = `https://mi-linux.wlv.ac.uk/~2411673/my-api.php?city=${Input_City}`;
+
+        fetch(API_URL)
+          .then(response => response.json())
+          .then(data => {
+            document.querySelector(".cloudtype").innerHTML = data.weather_description;
+            document.querySelector(".temp").innerHTML = Math.round(data.weather_temperature) + "°C";
+            document.querySelector(".wind").innerHTML = data.weather_wind +" m/s";
+            document.querySelector(".date").innerHTML = data.weather_when; 
+            document.querySelector(".city_name").innerHTML = data.city + " :-  ";
+            document.querySelector(".humidity").innerHTML = data.weather_humidity + "%";
+
+            iconCode = data.weather_icon;
+            iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+            document.querySelector(".weather_icon").src = iconUrl;
+          })
+
+          .catch(err => {
+            console.log(err);
+          });
+
+      });
+
+    </script>
+
+  </body>
+</html>
+
+<!--CSS Code-->
+<style>
+  *{
+    margin: 0;
+    padding: 0;	
+  }
+  
+  body{
+    background-image: url("Images/background.jpg");
+    background-position: center;
+    background-attachment: fixed;
+  }
+  
+  .window{
+    
+    width: 90%;
+    max-width: 470px;
+    margin: 80px auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background:  linear-gradient(#AF597F, #50639B, #9C5F5E);
+    color: #fff;
+    border-radius: 40px;
+    padding: 40px 30px;
+    text-align: center;
+    
+  }
+  
+  .Search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .search-container {
+    display: flex;
+    width: 60%;
+    align-items: center;
+  }
+
+  .city-input {
+    width: 90%; 
+    height: 30px;
+    border-radius: 20px;
+    background-color: #fff;
+    font-size: 25px;
+    margin-top: 10px;
+    text-align: center;
+    border-color: #000;
+    border-width: 4px;
+    justify-content: space-between;
+  }
+
+  .submit {
+  margin-top: 2%;
+  margin-left: 10px;
+  width: 25%; 
+  height: 30px; 
+  border-radius: 5px;
+  background-color: #dcdcdc;
+  font-size: 20px; 
+  text-align: center;
+  border-color: #000;
+  
+  }
+  
+  .window h1{
+    font-family: Times New Roman;
+    font-size: 45px;
+  }
+  
+  .weather_info h1{
+    font-size: 80px;
+    font-weight: 500;
+    font-family: Lucida Console;
+  }
+  
+  .weather_info h2{
+    font-size: 40px;
+    font-weight: 500;
+    font-family: Times New Roman;
+  }
+
+  .date{
+    font-size: 30px;
+    font-weight: 250;
+    font-family: Times New Roman;
+    align-items: center;
+  }
+  
+  .weather_icon{
+    
+     height: 200px;
+     width: 200px;
+     margin-top: 10px;
+  }
+  
+  .wind{
+    font-size: 30px;
+  }
+
+  .humidity{
+	font-size: 30px;
+}
+
+  .humipic{
+	height: 100px;
+	width: 100px;
+	margin-top: 20px;
+}
+
+   
+  .Info_name{
+    font-size: 25px;
+  }
+  
+  .windpic{
+     height: 100px;
+     width: 100px;
+     margin-top: 30px;
+  }
+  
+  .Info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    
+  }
+  
+  .name_could {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+  
+  </style>
+  
